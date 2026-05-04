@@ -1,5 +1,6 @@
 package com.allyssonmast.hamburgueria.exception;
 
+import com.allyssonmast.hamburgueria.dto.ErrorResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -57,5 +58,14 @@ public class GlobalExceptionHandler {
                         "message", ex.getMessage()
                 ));
     }
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<ErrorResponseDTO> handleBusinessException(BusinessException ex) {
 
+        ErrorResponseDTO error =
+                new ErrorResponseDTO(400, ex.getMessage());
+
+        return ResponseEntity
+                .badRequest()
+                .body(error);
+    }
 }
