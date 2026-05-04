@@ -2,6 +2,8 @@ package com.allyssonmast.hamburgueria.service.impl;
 
 import com.allyssonmast.hamburgueria.dto.PagamentoRequestDTO;
 import com.allyssonmast.hamburgueria.dto.PagamentoResponseDTO;
+import com.allyssonmast.hamburgueria.enums.StatusPagamento;
+import com.allyssonmast.hamburgueria.enums.TipoPagamento;
 import com.allyssonmast.hamburgueria.exception.NotFoundException;
 import com.allyssonmast.hamburgueria.exception.PaymentException;
 import com.allyssonmast.hamburgueria.model.*;

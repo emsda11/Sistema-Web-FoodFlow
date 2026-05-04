@@ -1,4 +1,4 @@
-package com.allyssonmast.hamburgueria.model;
+package com.allyssonmast.hamburgueria.enums;
 
 public enum TipoPagamento {
     PIX, CARTAO, BOLETO

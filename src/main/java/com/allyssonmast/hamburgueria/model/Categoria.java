@@ -1,31 +1,29 @@
 package com.allyssonmast.hamburgueria.model;
 
-import com.allyssonmast.hamburgueria.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
-@Table(name = "usuarios")
+@Table(name = "categorias")
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class Usuario {
+@AllArgsConstructor
+public class Categoria {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String username;
+    private String nome;
 
-    @Column(nullable = false)
-    private String password;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Role role;
+    @ManyToMany(mappedBy = "categorias")
+    private Set<Produto> produtos = new HashSet<>();
 }

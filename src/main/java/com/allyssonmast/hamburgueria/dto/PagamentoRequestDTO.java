@@ -1,6 +1,6 @@
 package com.allyssonmast.hamburgueria.dto;
 
-import com.allyssonmast.hamburgueria.model.TipoPagamento;
+import com.allyssonmast.hamburgueria.enums.TipoPagamento;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

@@ -1,7 +1,7 @@
 package com.allyssonmast.hamburgueria.repository.primary;
 
 import com.allyssonmast.hamburgueria.model.Pagamento;
-import com.allyssonmast.hamburgueria.model.TipoPagamento;
+import com.allyssonmast.hamburgueria.enums.TipoPagamento;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

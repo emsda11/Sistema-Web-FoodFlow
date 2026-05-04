@@ -1,7 +1,7 @@
 package com.allyssonmast.hamburgueria.strategy.factory;
 
 import com.allyssonmast.hamburgueria.exception.PaymentException;
-import com.allyssonmast.hamburgueria.model.TipoPagamento;
+import com.allyssonmast.hamburgueria.enums.TipoPagamento;
 import com.allyssonmast.hamburgueria.strategy.ProcessadorPagamentoStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

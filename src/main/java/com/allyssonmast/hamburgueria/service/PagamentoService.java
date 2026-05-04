@@ -2,7 +2,7 @@ package com.allyssonmast.hamburgueria.service;
 
 import com.allyssonmast.hamburgueria.dto.PagamentoRequestDTO;
 import com.allyssonmast.hamburgueria.dto.PagamentoResponseDTO;
-import com.allyssonmast.hamburgueria.model.TipoPagamento;
+import com.allyssonmast.hamburgueria.enums.TipoPagamento;
 
 import java.util.List;
 

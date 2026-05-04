@@ -1,7 +1,7 @@
 package com.allyssonmast.hamburgueria.dto;
 
-import com.allyssonmast.hamburgueria.model.StatusPagamento;
-import com.allyssonmast.hamburgueria.model.TipoPagamento;
+import com.allyssonmast.hamburgueria.enums.StatusPagamento;
+import com.allyssonmast.hamburgueria.enums.TipoPagamento;
 import lombok.Getter;
 import lombok.Setter;
 

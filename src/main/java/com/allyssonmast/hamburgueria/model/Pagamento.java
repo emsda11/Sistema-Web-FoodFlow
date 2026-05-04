@@ -1,39 +1,43 @@
 package com.allyssonmast.hamburgueria.model;
 
+import com.allyssonmast.hamburgueria.enums.MetodoPagamento;
+import com.allyssonmast.hamburgueria.enums.StatusPagamento;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "pagamentos")
 @Getter
 @Setter
-@Entity
+@NoArgsConstructor
+@AllArgsConstructor
 public class Pagamento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private double valor;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pedido_id", nullable = false, unique = true)
+    private Pedido pedido;
 
     @Enumerated(EnumType.STRING)
-    private TipoPagamento tipo;
+    @Column(nullable = false)
+    private MetodoPagamento metodo;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private StatusPagamento status;
 
-    private String descricao;
+    @Column(nullable = false)
+    private Double valor;
 
-    @ManyToOne
-    @JoinColumn(name = "cliente_id")
-    private Cliente cliente;
-
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(
-            name = "pagamento_categoria",
-            joinColumns = @JoinColumn(name = "pagamento_id"),
-            inverseJoinColumns = @JoinColumn(name = "categoria_id")
-    )
-    private List<CategoriaPagamento> categorias;
+    @CreationTimestamp
+    private LocalDateTime pagoEm;
 }

@@ -2,7 +2,7 @@ package com.allyssonmast.hamburgueria.controller;
 
 import com.allyssonmast.hamburgueria.dto.PagamentoRequestDTO;
 import com.allyssonmast.hamburgueria.dto.PagamentoResponseDTO;
-import com.allyssonmast.hamburgueria.model.TipoPagamento;
+import com.allyssonmast.hamburgueria.enums.TipoPagamento;
 import com.allyssonmast.hamburgueria.service.PagamentoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

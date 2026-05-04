@@ -1,6 +1,6 @@
 package com.allyssonmast.hamburgueria.config;
 
-import com.allyssonmast.hamburgueria.model.Role;
+import com.allyssonmast.hamburgueria.enums.Role;
 import com.allyssonmast.hamburgueria.model.Usuario;
 import com.allyssonmast.hamburgueria.repository.primary.UsuarioRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -44,7 +44,7 @@ public class DataInitializer {
 
                         encoder.encode("123456"));
 
-                manager.setRole(Role.ROLE_MANAGER);
+                manager.setRole(Role.ROLE_RESTAURANTE);
 
                 repository.save(manager);
             }
@@ -59,7 +59,7 @@ public class DataInitializer {
 
                         encoder.encode("123456"));
 
-                attendant.setRole(Role.ROLE_ATTENDANT);
+                attendant.setRole(Role.ROLE_CLIENTE);
 
                 repository.save(attendant);
             }

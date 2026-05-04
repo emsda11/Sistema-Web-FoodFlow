@@ -10,12 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "clientes")
+@Table(name = "restaurantes")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Cliente {
+public class Restaurante {
 
     @Id
     private Long id;
@@ -28,23 +28,25 @@ public class Cliente {
     @Column(nullable = false, length = 150)
     private String nome;
 
-    @Column(nullable = false, unique = true)
-    private String email;
+    @Column(length = 500)
+    private String descricao;
 
-    @Column(length = 20)
-    private String telefone;
+    @Column(nullable = false)
+    private String endereco;
+
+    @Column(nullable = false)
+    private Boolean ativo = true;
 
     @OneToMany(
-            mappedBy = "cliente",
+            mappedBy = "restaurante",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    private List<Produto> produtos = new ArrayList<>();
+
+    @OneToMany(mappedBy = "restaurante")
     private List<Pedido> pedidos = new ArrayList<>();
 
-    @OneToMany(
-            mappedBy = "cliente",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
+    @OneToMany(mappedBy = "restaurante")
     private List<Avaliacao> avaliacoes = new ArrayList<>();
 }
