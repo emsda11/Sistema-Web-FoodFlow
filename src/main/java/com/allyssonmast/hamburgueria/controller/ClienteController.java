@@ -14,7 +14,6 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -34,48 +33,6 @@ public class ClienteController {
     private ClienteService service;
 
     @Operation(
-            summary = "Criar cliente",
-            description = "Cria um novo cliente. Apenas ADMIN e MANAGER podem acessar."
-    )
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "201",
-                    description = "Cliente criado com sucesso",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(
-                                    implementation = ClienteResponseDTO.class
-                            )
-                    )
-            ),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Dados inválidos"
-            ),
-            @ApiResponse(
-                    responseCode = "401",
-                    description = "Não autenticado"
-            ),
-            @ApiResponse(
-                    responseCode = "403",
-                    description = "Acesso negado"
-            )
-    })
-    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
-    @PostMapping
-    public ResponseEntity<ClienteResponseDTO> criar(
-
-            @Valid
-            @RequestBody
-            ClienteRequestDTO dto
-    ) {
-
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(service.criar(dto));
-    }
-
-    @Operation(
             summary = "Listar clientes",
             description = "Retorna todos os clientes cadastrados."
     )
@@ -93,7 +50,7 @@ public class ClienteController {
                     )
             )
     })
-    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','ATTENDANT')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<ClienteResponseDTO>> listar() {
 
@@ -114,7 +71,7 @@ public class ClienteController {
                     description = "Cliente não encontrado"
             )
     })
-    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','ATTENDANT')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<ClienteResponseDTO> buscar(
 
@@ -142,7 +99,7 @@ public class ClienteController {
                     description = "Cliente não encontrado"
             )
     })
-    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<ClienteResponseDTO> atualizar(
 

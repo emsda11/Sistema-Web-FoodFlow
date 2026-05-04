@@ -7,8 +7,6 @@ import java.util.List;
 
 public interface ClienteService {
 
-    ClienteResponseDTO criar(ClienteRequestDTO cliente);
-
     List<ClienteResponseDTO> listar();
 
     ClienteResponseDTO buscarPorId(Long id);

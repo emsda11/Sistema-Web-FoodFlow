@@ -18,19 +18,6 @@ public class ClienteServiceImpl implements ClienteService {
     private ClienteRepository repository;
 
     @Override
-    public ClienteResponseDTO criar(ClienteRequestDTO clienteRequestDTO) {
-
-        Cliente cliente = new Cliente();
-
-        cliente.setNome(clienteRequestDTO.getNome());
-        cliente.setEmail(clienteRequestDTO.getEmail());
-
-        Cliente salvo = repository.save(cliente);
-
-        return toResponseDTO(salvo);
-    }
-
-    @Override
     public List<ClienteResponseDTO> listar() {
 
         return repository.findAll()

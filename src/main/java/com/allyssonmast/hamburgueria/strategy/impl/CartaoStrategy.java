@@ -11,6 +11,6 @@ public class CartaoStrategy implements ProcessadorPagamentoStrategy {
     public StatusPagamento processar(Pagamento pagamento) {
         return pagamento.getValor() > 1000
                 ? StatusPagamento.RECUSADO
-                : StatusPagamento.APROVADO;
+                : StatusPagamento.PROCESSADO;
     }
 }
