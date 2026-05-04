@@ -1,8 +1,8 @@
 {
   "info": {
-    "name": "Sistema Pagamentos - Atividade 03",
-    "_postman_id": "8c3c8d12-9f44-4b91-a001-atividade03",
-    "description": "Collection JWT com autenticação, roles e automação de token",
+    "name": "FoodFlow - Projeto Final DWeb II",
+    "_postman_id": "foodflow-final-project",
+    "description": "Collection do projeto final FoodFlow com JWT e compartilhamento automático de token",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "auth": {
@@ -10,7 +10,7 @@
     "bearer": [
       {
         "key": "token",
-        "value": "{{dwebII_token}}",
+        "value": "{{foodflow_token}}",
         "type": "string"
       }
     ]
@@ -21,7 +21,7 @@
       "value": "http://localhost:8080"
     },
     {
-      "key": "dwebII_token",
+      "key": "foodflow_token",
       "value": ""
     }
   ],
@@ -33,7 +33,7 @@
         "exec": [
           "if (pm.request.url.path.includes('login')) {",
           "    const response = pm.response.json();",
-          "    pm.collectionVariables.set('dwebII_token', response.token);",
+          "    pm.collectionVariables.set('foodflow_token', response.token);",
           "}"
         ]
       }
@@ -43,6 +43,66 @@
     {
       "name": "AUTH",
       "item": [
+        {
+          "name": "REGISTRAR CLIENTE",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"cliente1\",\n  \"password\": \"123456\",\n  \"nome\": \"Cliente Teste\",\n  \"email\": \"cliente@email.com\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/register/cliente",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "register",
+                "cliente"
+              ]
+            }
+          }
+        },
+        {
+          "name": "REGISTRAR RESTAURANTE",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"restaurante1\",\n  \"password\": \"123456\",\n  \"nome\": \"Burger House\",\n  \"descricao\": \"Hamburgueria artesanal\",\n  \"endereco\": \"Rua Central, 100\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/register/restaurante",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "register",
+                "restaurante"
+              ]
+            }
+          }
+        },
         {
           "name": "LOGIN ADMIN",
           "request": {
@@ -73,7 +133,7 @@
           }
         },
         {
-          "name": "LOGIN MANAGER",
+          "name": "LOGIN CLIENTE",
           "request": {
             "auth": {
               "type": "noauth"
@@ -87,7 +147,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"username\": \"manager\",\n  \"password\": \"123456\"\n}"
+              "raw": "{\n  \"username\": \"cliente1\",\n  \"password\": \"123456\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/auth/login",
@@ -102,7 +162,7 @@
           }
         },
         {
-          "name": "LOGIN ATTENDANT",
+          "name": "LOGIN RESTAURANTE",
           "request": {
             "auth": {
               "type": "noauth"
@@ -116,7 +176,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"username\": \"attendant\",\n  \"password\": \"123456\"\n}"
+              "raw": "{\n  \"username\": \"restaurante1\",\n  \"password\": \"123456\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/auth/login",
@@ -133,53 +193,16 @@
       ]
     },
     {
-      "name": "INFO",
-      "item": [
-        {
-          "name": "GET INFO",
-          "request": {
-            "auth": {
-              "type": "noauth"
-            },
-            "method": "GET",
-            "url": {
-              "raw": "{{base_url}}/info",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "info"
-              ]
-            }
-          }
-        }
-      ]
-    },
-    {
       "name": "CLIENTES",
       "item": [
         {
-          "name": "CRIAR CLIENTE",
+          "name": "BUSCAR MEU PERFIL/CLIENTE",
           "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"nome\": \"Allysson\",\n  \"email\": \"allysson@email.com\"\n}"
-            },
+            "method": "GET",
             "url": {
-              "raw": "{{base_url}}/clientes",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "clientes"
-              ]
+              "raw": "{{base_url}}/clientes/me",
+              "host": ["{{base_url}}"],
+              "path": ["clientes", "me"]
             }
           }
         },
@@ -204,8 +227,13 @@
             "method": "GET",
             "url": {
               "raw": "{{base_url}}/clientes/1",
-              "host": ["{{base_url}}"],
-              "path": ["clientes", "1"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "clientes",
+                "1"
+              ]
             }
           }
         },
@@ -221,84 +249,22 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"nome\": \"Allysson Atualizado\",\n  \"email\": \"allyssonnovo@email.com\"\n}"
+              "raw": "{\n  \"nome\": \"Cliente Atualizado\",\n  \"email\": \"clienteatualizado@email.com\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/clientes/1",
-              "host": ["{{base_url}}"],
-              "path": ["clientes", "1"]
-            }
-          }
-        },
-        {
-          "name": "DELETAR CLIENTE",
-          "request": {
-            "method": "DELETE",
-            "url": {
-              "raw": "{{base_url}}/clientes/1",
-              "host": ["{{base_url}}"],
-              "path": ["clientes", "1"]
-            }
-          }
-        }
-      ]
-    },
-    {
-      "name": "CATEGORIAS",
-      "item": [
-        {
-          "name": "CRIAR CATEGORIA DELIVERY",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"nome\": \"DELIVERY\"\n}"
-            },
-            "url": {
-              "raw": "{{base_url}}/categorias",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
-                "categorias"
+                "clientes",
+                "1"
               ]
             }
           }
         },
         {
-          "name": "LISTAR CATEGORIAS",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{base_url}}/categorias",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "categorias"
-              ]
-            }
-          }
-        },
-        {
-          "name": "BUSCAR CATEGORIA POR ID",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{base_url}}/categorias/1",
-              "host": ["{{base_url}}"],
-              "path": ["categorias", "1"]
-            }
-          }
-        },
-        {
-          "name": "ATUALIZAR CATEGORIA",
+          "name": "ATUALIZAR MEU PERFIL",
           "request": {
             "method": "PUT",
             "header": [
@@ -309,23 +275,166 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"nome\": \"IFOOD\"\n}"
+              "raw": "{\n  \"nome\": \"Cliente Atualizado\",\n  \"email\": \"cliente@email.com\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/categorias/1",
+              "raw": "{{base_url}}/clientes/me",
               "host": ["{{base_url}}"],
-              "path": ["categorias", "1"]
+              "path": ["clientes", "me"]
             }
           }
         },
         {
-          "name": "DELETAR CATEGORIA",
+          "name": "DELETAR CLIENTE",
           "request": {
             "method": "DELETE",
             "url": {
-              "raw": "{{base_url}}/categorias/1",
+              "raw": "{{base_url}}/clientes/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "clientes",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "DELETAR MEU PERFIL",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/clientes/me",
               "host": ["{{base_url}}"],
-              "path": ["categorias", "1"]
+              "path": ["clientes", "me"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "RESTAURANTES",
+      "item": [
+        {
+          "name": "LISTAR RESTAURANTES",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{foodflow_token}}"
+                }
+              ]
+            },
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/restaurantes",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "restaurantes"
+              ]
+            }
+          }
+        },
+        {
+          "name": "LISTAR RESTAURANTES ATIVOS",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{foodflow_token}}"
+                }
+              ]
+            },
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/restaurantes/ativos",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "restaurantes",
+                "ativos"
+              ]
+            }
+          }
+        },
+        {
+          "name": "BUSCAR RESTAURANTE POR ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{foodflow_token}}"
+                }
+              ]
+            },
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/restaurantes/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "restaurantes",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "BUSCAR RESTAURANTE POR NOME",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/restaurantes/buscar?nome=burger",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "restaurantes",
+                "buscar"
+              ],
+              "query": [
+                {
+                  "key": "nome",
+                  "value": "burger"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "ATUALIZAR RESTAURANTE",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Burger House Premium\",\n  \"descricao\": \"Hamburgueria gourmet\",\n  \"endereco\": \"Nova Avenida, 500\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/restaurantes/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "restaurantes",
+                "1"
+              ]
             }
           }
         }
@@ -335,7 +444,7 @@
       "name": "PAGAMENTOS",
       "item": [
         {
-          "name": "CRIAR PAGAMENTO PIX",
+          "name": "PROCESSAR PAGAMENTO",
           "request": {
             "method": "POST",
             "header": [
@@ -346,23 +455,8 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"valor\": 100,\n  \"tipo\": \"PIX\",\n  \"descricao\": \"Pagamento PIX\",\n  \"clienteId\": 1,\n  \"categoriasIds\": [1, 2]\n}"
+              "raw": "{\n  \"pedidoId\": 1,\n  \"metodo\": \"PIX\"\n}"
             },
-            "url": {
-              "raw": "{{base_url}}/pagamentos",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "pagamentos"
-              ]
-            }
-          }
-        },
-        {
-          "name": "LISTAR PAGAMENTOS",
-          "request": {
-            "method": "GET",
             "url": {
               "raw": "{{base_url}}/pagamentos",
               "host": [
@@ -380,75 +474,12 @@
             "method": "GET",
             "url": {
               "raw": "{{base_url}}/pagamentos/1",
-              "host": ["{{base_url}}"],
-              "path": ["pagamentos", "1"]
-            }
-          }
-        },
-        {
-          "name": "BUSCAR PAGAMENTOS POR TIPO",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{base_url}}/pagamentos/tipo/PIX",
-              "host": ["{{base_url}}"],
-              "path": ["pagamentos", "tipo", "PIX"]
-            }
-          }
-        },
-        {
-          "name": "ATUALIZAR PAGAMENTO",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"valor\": 250,\n  \"tipo\": \"CARTAO\",\n  \"descricao\": \"Pagamento atualizado\",\n  \"clienteId\": 1,\n  \"categoriasIds\": [1]\n}"
-            },
-            "url": {
-              "raw": "{{base_url}}/pagamentos/1",
-              "host": ["{{base_url}}"],
-              "path": ["pagamentos", "1"]
-            }
-          }
-        },
-        {
-          "name": "DELETAR PAGAMENTO",
-          "request": {
-            "method": "DELETE",
-            "url": {
-              "raw": "{{base_url}}/pagamentos/1",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
                 "pagamentos",
                 "1"
-              ]
-            }
-          }
-        }
-      ]
-    },
-    {
-      "name": "AUDITORIA",
-      "item": [
-        {
-          "name": "LISTAR LOGS AUDITORIA",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{base_url}}/auditoria",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "auditoria"
               ]
             }
           }

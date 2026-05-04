@@ -16,6 +16,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -55,6 +56,15 @@ public class ClienteController {
     public ResponseEntity<List<ClienteResponseDTO>> listar() {
 
         return ResponseEntity.ok(service.listar());
+    }
+
+    @PreAuthorize("hasRole('CLIENTE')")
+    @GetMapping("/me")
+    public ResponseEntity<ClienteResponseDTO> buscarMeuPerfil(Authentication authentication) {
+
+        return ResponseEntity.ok(
+                service.buscarPorUsername(authentication.getName())
+        );
     }
 
     @Operation(
@@ -117,6 +127,17 @@ public class ClienteController {
         return ResponseEntity.ok(service.atualizar(id, cliente));
     }
 
+    @PreAuthorize("hasRole('CLIENTE')")
+    @PutMapping("/me")
+    public ResponseEntity<ClienteResponseDTO> atualizarMeuPerfil(
+            Authentication authentication, @Valid @RequestBody ClienteRequestDTO dto) {
+
+        return ResponseEntity.ok(
+                service.atualizarMeuPerfil(
+                        authentication.getName(),
+                        dto));
+    }
+
     @Operation(
             summary = "Remover cliente",
             description = "Remove um cliente pelo ID."
@@ -145,5 +166,16 @@ public class ClienteController {
         service.deletar(id);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @PreAuthorize("hasRole('CLIENTE')")
+    @DeleteMapping("/me")
+    public ResponseEntity<Void> deletarMeuPerfil(Authentication authentication) {
+
+        service.deletarMeuPerfil(authentication.getName());
+
+        return ResponseEntity
+                .noContent()
+                .build();
     }
 }

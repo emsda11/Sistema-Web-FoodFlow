@@ -27,6 +27,14 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
+    public ClienteResponseDTO buscarPorUsername(String username) {
+
+        Cliente cliente = getClienteByUsername(username);
+
+        return toResponseDTO(cliente);
+    }
+
+    @Override
     public ClienteResponseDTO buscarPorId(Long id) {
 
         Cliente cliente = buscarEntidadePorId(id);
@@ -51,9 +59,39 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
+    public ClienteResponseDTO atualizarMeuPerfil(String username, ClienteRequestDTO dto) {
+
+        Cliente cliente = getClienteByUsername(username);
+
+        cliente.setNome(dto.getNome());
+
+        cliente.setEmail(dto.getEmail());
+
+        Cliente atualizado = repository.save(cliente);
+
+        return toResponseDTO(atualizado);
+    }
+
+    public Cliente getClienteByUsername(String username) {
+
+        return repository
+                .findByUsuarioUsername(username)
+                .orElseThrow(() ->
+                        new NotFoundException("Cliente não encontrado"));
+    }
+
+    @Override
     public void deletar(Long id) {
 
         Cliente cliente = buscarEntidadePorId(id);
+
+        repository.delete(cliente);
+    }
+
+    @Override
+    public void deletarMeuPerfil(String username) {
+
+        Cliente cliente = getClienteByUsername(username);
 
         repository.delete(cliente);
     }

@@ -31,7 +31,7 @@ public class RestauranteController {
 
     @Operation(summary = "Listar restaurantes", description = "Retorna todos os restaurantes cadastrados")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Lista retornada com sucesso", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = RestauranteResponseDTO.class))))})
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENTE')")
     @GetMapping
     public ResponseEntity<List<RestauranteResponseDTO>> listar() {
 
@@ -40,6 +40,7 @@ public class RestauranteController {
 
     @Operation(summary = "Listar restaurantes ativos", description = "Retorna apenas restaurantes ativos")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Lista retornada com sucesso")})
+    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENTE')")
     @GetMapping("/ativos")
     public ResponseEntity<List<RestauranteResponseDTO>> listarAtivos() {
 
@@ -48,6 +49,7 @@ public class RestauranteController {
 
     @Operation(summary = "Buscar restaurante por ID", description = "Retorna um restaurante específico")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Restaurante encontrado"), @ApiResponse(responseCode = "404", description = "Restaurante não encontrado")})
+    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENTE')")
     @GetMapping("/{id}")
     public ResponseEntity<RestauranteResponseDTO> buscarPorId(
             @Parameter(description = "ID do restaurante", example = "1") @PathVariable Long id) {
@@ -57,7 +59,7 @@ public class RestauranteController {
 
     @Operation(summary = "Atualizar restaurante", description = "Atualiza os dados de um restaurante")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Restaurante atualizado com sucesso"), @ApiResponse(responseCode = "404", description = "Restaurante não encontrado"), @ApiResponse(responseCode = "403", description = "Acesso negado")})
-    @PreAuthorize("hasRole('RESTAURANTE')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'RESTAURANTE')")
     @PutMapping("/{id}")
     public ResponseEntity<RestauranteResponseDTO> atualizar(
             @Parameter(description = "ID do restaurante", example = "1") @PathVariable Long id,
@@ -68,6 +70,7 @@ public class RestauranteController {
 
     @Operation(summary = "Buscar restaurantes por nome", description = "Busca restaurantes pelo nome")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Busca realizada com sucesso")})
+    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENTE')")
     @GetMapping("/buscar")
     public ResponseEntity<List<RestauranteResponseDTO>> buscarPorNome(
             @Parameter(description = "Nome do restaurante", example = "pizza") @RequestParam String nome) {

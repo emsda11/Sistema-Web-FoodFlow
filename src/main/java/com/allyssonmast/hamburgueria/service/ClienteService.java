@@ -9,9 +9,15 @@ public interface ClienteService {
 
     List<ClienteResponseDTO> listar();
 
+    ClienteResponseDTO buscarPorUsername(String username);
+
     ClienteResponseDTO buscarPorId(Long id);
 
     ClienteResponseDTO atualizar(Long id, ClienteRequestDTO cliente);
 
+    ClienteResponseDTO atualizarMeuPerfil(String username, ClienteRequestDTO dto);
+
     void deletar(Long id);
+
+    void deletarMeuPerfil(String username);
 }
