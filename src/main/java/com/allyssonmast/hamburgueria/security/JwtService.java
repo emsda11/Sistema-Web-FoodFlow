@@ -2,6 +2,7 @@ package com.allyssonmast.hamburgueria.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -20,13 +21,23 @@ public class JwtService {
 
     public String generateToken(UserDetails user) {
 
+        String role = user.getAuthorities()
+                .stream()
+                .findFirst()
+                .map(GrantedAuthority::getAuthority)
+                .orElse("ROLE_CLIENTE");
+
         return Jwts.builder()
 
                 .setSubject(user.getUsername())
 
+                .claim("role", role)
+
                 .setIssuedAt(new Date())
 
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
+                .setExpiration(
+                        new Date(System.currentTimeMillis() + 1000 * 60 * 60)
+                )
 
                 .signWith(getKey(), SignatureAlgorithm.HS256)
 

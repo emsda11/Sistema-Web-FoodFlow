@@ -24,8 +24,5 @@ public class ProdutoRequestDTO {
     @NotNull
     private Boolean disponivel;
 
-    @NotNull
-    private Long restauranteId;
-
     private List<Long> categoriasIds;
 }

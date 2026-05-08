@@ -29,6 +29,13 @@ public class ProdutoController {
     @Autowired
     private ProdutoService service;
 
+    @Operation(summary = "Meus produtos", description = "Retorna os produtos do restaurante autenticado")
+    @PreAuthorize("hasRole('RESTAURANTE')")
+    @GetMapping("/me")
+    public ResponseEntity<List<ProdutoResponseDTO>> meusProdutos() {
+        return ResponseEntity.ok(service.meusProdutos());
+    }
+
     @Operation(summary = "Listar produtos", description = "Retorna todos os produtos cadastrados")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Lista retornada com sucesso", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ProdutoResponseDTO.class))))})
     @PreAuthorize("hasAnyRole('ADMIN', 'CLIENTE')")
@@ -37,21 +44,18 @@ public class ProdutoController {
         return ResponseEntity.ok(service.listar());
     }
 
-    @Operation(summary = "Buscar produto por ID", description = "Retorna um produto específico pelo ID")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Produto encontrado"), @ApiResponse(responseCode = "404", description = "Produto não encontrado")})
-    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENTE')")
-    @GetMapping("/{id}")
-    public ResponseEntity<ProdutoResponseDTO> buscarPorId(
-            @Parameter(description = "ID do produto", example = "1") @PathVariable Long id) {
-        return ResponseEntity.ok(service.buscarPorId(id));
+    @PreAuthorize("permitAll()")
+    @GetMapping("/restaurante/{restauranteId}")
+    public ResponseEntity<List<ProdutoResponseDTO>> listarPorRestaurante(@PathVariable Long restauranteId) {
+
+        return ResponseEntity.ok(service.listarPorRestaurante(restauranteId));
     }
 
     @Operation(summary = "Buscar produtos por nome", description = "Busca produtos pelo nome")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Busca realizada com sucesso")})
     @PreAuthorize("hasAnyRole('ADMIN', 'CLIENTE')")
     @GetMapping("/buscar")
-    public ResponseEntity<List<ProdutoResponseDTO>> buscarPorNome(
-            @Parameter(description = "Nome do produto", example = "hamburguer") @RequestParam String nome) {
+    public ResponseEntity<List<ProdutoResponseDTO>> buscarPorNome(@Parameter(description = "Nome do produto", example = "hamburguer") @RequestParam String nome) {
         return ResponseEntity.ok(service.buscarPorNome(nome));
     }
 
@@ -67,9 +71,7 @@ public class ProdutoController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Produto atualizado com sucesso"), @ApiResponse(responseCode = "404", description = "Produto não encontrado"), @ApiResponse(responseCode = "403", description = "Acesso negado")})
     @PreAuthorize("hasAnyRole('ADMIN', 'RESTAURANTE')")
     @PutMapping("/{id}")
-    public ResponseEntity<ProdutoResponseDTO> atualizar(
-            @Parameter(description = "ID do produto", example = "1") @PathVariable Long id,
-            @Valid @RequestBody ProdutoRequestDTO dto) {
+    public ResponseEntity<ProdutoResponseDTO> atualizar(@Parameter(description = "ID do produto", example = "1") @PathVariable Long id, @Valid @RequestBody ProdutoRequestDTO dto) {
         return ResponseEntity.ok(service.atualizar(id, dto));
     }
 
@@ -77,8 +79,7 @@ public class ProdutoController {
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Produto removido com sucesso"), @ApiResponse(responseCode = "404", description = "Produto não encontrado")})
     @PreAuthorize("hasAnyRole('ADMIN', 'RESTAURANTE')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(
-            @Parameter(description = "ID do produto", example = "1") @PathVariable Long id) {
+    public ResponseEntity<Void> deletar(@Parameter(description = "ID do produto", example = "1") @PathVariable Long id) {
         service.deletar(id);
         return ResponseEntity.noContent().build();
     }

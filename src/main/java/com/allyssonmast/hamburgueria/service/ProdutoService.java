@@ -18,4 +18,8 @@ public interface ProdutoService {
     void deletar(Long id);
 
     List<ProdutoResponseDTO> buscarPorNome(String nome);
+
+    List<ProdutoResponseDTO> meusProdutos();
+
+    List<ProdutoResponseDTO> listarPorRestaurante(Long restauranteId);
 }
