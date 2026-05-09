@@ -6,8 +6,6 @@ services:
     image: postgres:16
     container_name: postgres-dev-main
 
-    restart: always
-
     environment:
       POSTGRES_DB: foodflow_dev
       POSTGRES_USER: postgres
@@ -16,14 +14,12 @@ services:
     ports:
       - "5432:5432"
 
-    volumes:
-      - postgres_dev_main_data:/var/lib/postgresql/data
+    profiles:
+      - dev
 
   postgres-dev-audit:
     image: postgres:16
     container_name: postgres-dev-audit
-
-    restart: always
 
     environment:
       POSTGRES_DB: foodflow_audit_dev
@@ -33,14 +29,29 @@ services:
     ports:
       - "5433:5432"
 
-    volumes:
-      - postgres_dev_audit_data:/var/lib/postgresql/data
+    profiles:
+      - dev
+
+  foodflow-api-dev:
+    build: .
+    container_name: foodflow-api-dev
+
+    env_file:
+      - .env.dev
+
+    depends_on:
+      - postgres-dev-main
+      - postgres-dev-audit
+
+    ports:
+      - "8080:8080"
+
+    profiles:
+      - dev
 
   postgres-prod-main:
     image: postgres:16
     container_name: postgres-prod-main
-
-    restart: always
 
     environment:
       POSTGRES_DB: foodflow_prod
@@ -50,14 +61,12 @@ services:
     ports:
       - "5434:5432"
 
-    volumes:
-      - postgres_prod_main_data:/var/lib/postgresql/data
+    profiles:
+      - prod
 
   postgres-prod-audit:
     image: postgres:16
     container_name: postgres-prod-audit
-
-    restart: always
 
     environment:
       POSTGRES_DB: foodflow_audit_prod
@@ -67,11 +76,22 @@ services:
     ports:
       - "5435:5432"
 
-    volumes:
-      - postgres_prod_audit_data:/var/lib/postgresql/data
+    profiles:
+      - prod
 
-volumes:
-  postgres_dev_main_data:
-  postgres_dev_audit_data:
-  postgres_prod_main_data:
-  postgres_prod_audit_data:
+  foodflow-api-prod:
+    build: .
+    container_name: foodflow-api-prod
+
+    env_file:
+      - .env.prod
+
+    depends_on:
+      - postgres-prod-main
+      - postgres-prod-audit
+
+    ports:
+      - "8081:8080"
+
+    profiles:
+      - prod
