@@ -1,7 +1,12 @@
 package com.allyssonmast.hamburgueria.security;
 
-import io.jsonwebtoken.*;
+import com.allyssonmast.hamburgueria.model.Usuario;
+import com.allyssonmast.hamburgueria.repository.primary.UsuarioRepository;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -12,34 +17,37 @@ import java.util.Date;
 @Service
 public class JwtService {
 
-    private static final String SECRET = "minha-chave-super-secreta-com-mais-de-32-caracteres"; //o Certo é armazenar em aplicaçoes como o Vault
+    private static final String SECRET = "minha-chave-super-secreta-com-mais-de-32-caracteres";
 
-    private Key getKey() {
+    private Key key;
 
-        return Keys.hmacShaKeyFor(SECRET.getBytes());
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    @PostConstruct
+    public void init() {
+        key = Keys.hmacShaKeyFor(SECRET.getBytes());
     }
 
     public String generateToken(UserDetails user) {
 
-        String role = user.getAuthorities()
-                .stream()
-                .findFirst()
-                .map(GrantedAuthority::getAuthority)
-                .orElse("ROLE_CLIENTE");
+        Usuario usuario = usuarioRepository.findByUsername(user.getUsername()).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        String role = user.getAuthorities().stream().findFirst().map(GrantedAuthority::getAuthority).orElse("ROLE_CLIENTE");
 
         return Jwts.builder()
 
                 .setSubject(user.getUsername())
 
+                .claim("id", usuario.getId())
+
                 .claim("role", role)
 
                 .setIssuedAt(new Date())
 
-                .setExpiration(
-                        new Date(System.currentTimeMillis() + 1000 * 60 * 60)
-                )
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
 
-                .signWith(getKey(), SignatureAlgorithm.HS256)
+                .signWith(key, SignatureAlgorithm.HS256)
 
                 .compact();
     }
@@ -48,7 +56,7 @@ public class JwtService {
 
         return Jwts.parserBuilder()
 
-                .setSigningKey(getKey())
+                .setSigningKey(key)
 
                 .build()
 
