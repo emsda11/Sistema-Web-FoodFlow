@@ -1,88 +1,235 @@
-# Sistema de Pagamentos - Hamburgueria
+# 🍔 FoodFlow
 
+![Java](https://img.shields.io/badge/Java-17-orange)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-brightgreen)
+![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
+![License](https://img.shields.io/badge/license-MIT-blue)
 
-API REST desenvolvida com Spring Boot para gerenciamento de clientes, categorias e pagamentos de uma hamburgueria, utilizando autenticação JWT, controle de acesso baseado em roles e arquitetura desacoplada com DTOs.
-
----
-
-# Tecnologias Utilizadas
-
-* Java 17
-* Spring Boot
-* Spring Security
-* JWT Authentication
-* Spring Data JPA
-* Bean Validation
-* PostgreSQL / H2
-* Swagger OpenAPI
+Sistema web de delivery inspirado no modelo do iFood, permitindo que clientes realizem pedidos em restaurantes cadastrados.
 
 ---
 
-# Arquitetura da Aplicação
+# 🚀 Sobre o Projeto
+
+O **FoodFlow** é uma plataforma completa de delivery que conecta clientes, restaurantes e administradores, permitindo o gerenciamento de pedidos, pagamentos e avaliações em um único sistema.
+
+A aplicação foi desenvolvida utilizando arquitetura REST com Spring Boot, autenticação JWT e separação de responsabilidades utilizando DTOs, Services, Controllers e Repositories.
+
+---
+
+# 👥 Desenvolvedores
+
+* ALLYSSON MASTRÂNGELO TEIXEIRA ARAUJO DE FREITAS
+* CARLOS VICTOR ARAÚJO BEZERRA ALVES
+* EDJANE MIKAELLY SILVA DE AZEVEDO
+
+---
+
+# 👥 Perfis de Usuário
+
+## 👤 Cliente
+
+* Realiza pedidos
+* Acompanha entregas
+* Visualiza histórico
+* Avalia restaurantes
+
+## 🍽️ Restaurante
+
+* Gerencia produtos
+* Gerencia pedidos
+* Atualiza status
+* Visualiza avaliações
+
+## 🛠️ Administrador
+
+* Gerencia usuários
+* Gerencia restaurantes
+* Controla pedidos
+* Administra toda a plataforma
+
+---
+
+# ⚙️ Funcionalidades Principais
+
+* 🔐 Cadastro e autenticação com JWT
+* 🏪 CRUD de restaurantes
+* 🍔 CRUD de produtos
+* 📂 Gerenciamento de categorias
+* 🛒 Carrinho de compras
+* 📦 Controle de pedidos
+* 🚚 Acompanhamento de status
+* 💳 Registro de pagamentos
+* ⭐ Avaliações de restaurantes
+* 📊 Relatórios administrativos
+
+---
+
+# 🏗️ Arquitetura da Aplicação
 
 A aplicação segue arquitetura REST com separação de responsabilidades:
 
-* Controllers → exposição dos endpoints REST
-* Services → regras de negócio
-* Repositories → acesso ao banco de dados
-* DTOs → comunicação da API
-* Entities → representação das tabelas do banco
+* **Controllers** → exposição dos endpoints REST
+* **Services** → regras de negócio
+* **Repositories** → acesso ao banco de dados
+* **DTOs** → comunicação da API
+* **Entities** → representação das tabelas do banco
 
 A aplicação utiliza DTOs para desacoplar totalmente as entidades do banco da interface da API.
 
 ---
 
-# Segurança da Aplicação
+# 🔐 Segurança da Aplicação
 
 A autenticação é realizada utilizando JWT Token.
 
-O controle de acesso é feito utilizando:
+O controle de acesso utiliza:
 
 ```java
 @PreAuthorize(...)
 ```
 
-com regras baseadas em roles.
+com permissões baseadas em roles.
 
-Roles disponíveis:
+## Roles disponíveis
 
 * ADMIN
-* MANAGER
-* ATTENDANT
+* RESTAURANTE
+* CLIENTE
 
 ---
 
-# Matriz de Permissões
+# 📋 Matriz de Permissões
 
-| Endpoint                | Método | ADMIN | MANAGER | ATTENDANT | Público |
-| ----------------------- | ------ | ----- | ------- | --------- | ------- |
-| /info                   | GET    | ✅     | ✅       | ✅         | ✅       |
-| /auth/login             | POST   | ✅     | ✅       | ✅         | ✅       |
-| /clientes               | GET    | ✅     | ✅       | ✅         | ❌       |
-| /clientes               | POST   | ✅     | ✅       | ❌         | ❌       |
-| /clientes/{id}          | GET    | ✅     | ✅       | ✅         | ❌       |
-| /clientes/{id}          | PUT    | ✅     | ✅       | ❌         | ❌       |
-| /clientes/{id}          | DELETE | ✅     | ❌       | ❌         | ❌       |
-| /categorias             | GET    | ✅     | ✅       | ✅         | ❌       |
-| /categorias             | POST   | ✅     | ❌       | ❌         | ❌       |
-| /categorias/{id}        | GET    | ✅     | ✅       | ✅         | ❌       |
-| /categorias/{id}        | PUT    | ✅     | ✅       | ✅         | ❌       |
-| /categorias/{id}        | DELETE | ✅     | ✅       | ❌         | ❌       |
-| /pagamentos             | GET    | ✅     | ✅       | ✅         | ❌       |
-| /pagamentos             | POST   | ✅     | ❌       | ❌         | ❌       |
-| /pagamentos/{id}        | GET    | ✅     | ✅       | ✅         | ❌       |
-| /pagamentos/{id}        | PUT    | ✅     | ✅       | ❌         | ❌       |
-| /pagamentos/{id}        | DELETE | ✅     | ❌       | ❌         | ❌       |
-| /pagamentos/tipo/{tipo} | GET    | ✅     | ✅       | ✅         | ❌       |
-| /auditoria              | GET    | ✅     | ❌       | ❌         | ❌       |
+| Endpoint                       | Método | ADMIN | RESTAURANTE | CLIENTE | Público |
+| ------------------------------ | ------ | ----- | ----------- | ------- | ------- |
+| `/info`                        | GET    | ✅     | ✅           | ✅       | ✅       |
+| `/auth/login`                  | POST   | ✅     | ✅           | ✅       | ✅       |
+| `/usuarios`                    | GET    | ✅     | ❌           | ❌       | ❌       |
+| `/usuarios/{id}`               | GET    | ✅     | ❌           | ❌       | ❌       |
+| `/usuarios/{id}`               | PUT    | ✅     | ❌           | ❌       | ❌       |
+| `/usuarios/{id}`               | DELETE | ✅     | ❌           | ❌       | ❌       |
+| `/restaurantes`                | GET    | ✅     | ✅           | ✅       | ✅       |
+| `/restaurantes`                | POST   | ✅     | ❌           | ❌       | ❌       |
+| `/restaurantes/{id}`           | GET    | ✅     | ✅           | ✅       | ✅       |
+| `/restaurantes/{id}`           | PUT    | ✅     | ✅           | ❌       | ❌       |
+| `/restaurantes/{id}`           | DELETE | ✅     | ❌           | ❌       | ❌       |
+| `/produtos`                    | GET    | ✅     | ✅           | ✅       | ✅       |
+| `/produtos`                    | POST   | ✅     | ✅           | ❌       | ❌       |
+| `/produtos/{id}`               | GET    | ✅     | ✅           | ✅       | ✅       |
+| `/produtos/{id}`               | PUT    | ✅     | ✅           | ❌       | ❌       |
+| `/produtos/{id}`               | DELETE | ✅     | ✅           | ❌       | ❌       |
+| `/categorias`                  | GET    | ✅     | ✅           | ✅       | ✅       |
+| `/categorias`                  | POST   | ✅     | ❌           | ❌       | ❌       |
+| `/categorias/{id}`             | PUT    | ✅     | ❌           | ❌       | ❌       |
+| `/categorias/{id}`             | DELETE | ✅     | ❌           | ❌       | ❌       |
+| `/pedidos`                     | GET    | ✅     | ✅           | ✅       | ❌       |
+| `/pedidos`                     | POST   | ❌     | ❌           | ✅       | ❌       |
+| `/pedidos/{id}`                | GET    | ✅     | ✅           | ✅       | ❌       |
+| `/pedidos/{id}/status`         | PUT    | ✅     | ✅           | ❌       | ❌       |
+| `/pagamentos`                  | GET    | ✅     | ❌           | ❌       | ❌       |
+| `/pagamentos`                  | POST   | ✅     | ❌           | ✅       | ❌       |
+| `/pagamentos/{id}`             | GET    | ✅     | ❌           | ✅       | ❌       |
+| `/avaliacoes`                  | POST   | ❌     | ❌           | ✅       | ❌       |
+| `/avaliacoes/restaurante/{id}` | GET    | ✅     | ✅           | ✅       | ✅       |
+| `/admin/relatorios`            | GET    | ✅     | ❌           | ❌       | ❌       |
 
 ---
 
-# Autenticação
+# 🧩 Entidades do Sistema
 
-## Login
+* Usuário
+* Cliente
+* Restaurante
+* Produto
+* Categoria
+* Pedido
+* ItemPedido
+* Endereço
+* Pagamento
+* Avaliação
 
-Endpoint:
+---
+
+# 🔗 Relacionamentos
+
+## 🔹 One-to-One
+
+* Usuário ↔ Cliente
+* Usuário ↔ Restaurante
+* Pedido ↔ Pagamento
+
+## 🔹 One-to-Many
+
+* Restaurante → Produto
+* Cliente → Pedido
+* Pedido → ItemPedido
+
+## 🔹 Many-to-Many
+
+* Produto ↔ Categoria
+
+---
+
+# 🏗️ Modelo de Dados (DER)
+
+```mermaid
+erDiagram
+
+USUARIO ||--|| CLIENTE : possui
+USUARIO ||--|| RESTAURANTE : possui
+
+CLIENTE ||--o{ PEDIDO : realiza
+PEDIDO ||--o{ ITEMPEDIDO : contem
+
+RESTAURANTE ||--o{ PRODUTO : possui
+
+PRODUTO }o--o{ CATEGORIA : pertence
+
+PEDIDO ||--|| PAGAMENTO : possui
+```
+
+---
+
+# 🛠️ Tecnologias Utilizadas
+
+## Back-end
+
+* Java 17
+* Spring Boot
+* Spring Security
+* Spring Data JPA
+* JWT Authentication
+* Bean Validation
+
+## Banco de Dados
+
+* PostgreSQL
+* H2 (desenvolvimento)
+
+## Front-end
+
+* Flutter
+* React
+* HTML/CSS/JavaScript
+
+## Documentação
+
+* Swagger OpenAPI
+
+---
+
+# 📦 Endpoints Principais
+
+## Público
+
+```http
+GET /info
+```
+
+---
+
+## Autenticação
 
 ```http
 POST /auth/login
@@ -107,72 +254,60 @@ POST /auth/login
 
 ---
 
-# Exemplos de DTOs
+## Clientes
 
-## Desacoplamento entre Entidade e API
+```http
+GET /clientes
+POST /clientes
+GET /clientes/{id}
+PUT /clientes/{id}
+DELETE /clientes/{id}
+```
+
+---
+
+## Restaurantes
+
+```http
+GET /restaurantes
+POST /restaurantes
+GET /restaurantes/{id}
+PUT /restaurantes/{id}
+DELETE /restaurantes/{id}
+```
+
+---
+
+## Produtos
+
+```http
+GET /produtos
+POST /produtos
+GET /produtos/{id}
+PUT /produtos/{id}
+DELETE /produtos/{id}
+```
+
+---
+
+## Pedidos
+
+```http
+GET /pedidos
+POST /pedidos
+GET /pedidos/{id}
+PUT /pedidos/{id}
+```
+
+---
+
+# 📚 DTOs e Validação
 
 A aplicação não expõe diretamente as entidades do banco de dados.
 
-As entidades representam a estrutura interna persistida no banco, enquanto os DTOs controlam os dados enviados e recebidos pela API.
+As entidades representam a estrutura persistida no banco, enquanto os DTOs controlam os dados enviados e recebidos pela API.
 
----
-
-# Exemplo: Cliente
-
-## Entidade (Banco de Dados)
-
-```java
-public class Cliente {
-
-    private Long id;
-    private String nome;
-    private String email;
-    private String senha;
-}
-```
-
-A entidade possui atributos internos que não devem ser expostos diretamente.
-
----
-
-## DTO de Entrada (Request)
-
-Utilizado para criação e atualização de clientes.
-
-### Exemplo Request
-
-```json
-{
-  "nome": "Allysson",
-  "email": "allysson@email.com"
-}
-```
-
----
-
-## DTO de Saída (Response)
-
-Utilizado para retorno da API.
-
-### Exemplo Response
-
-```json
-{
-  "id": 1,
-  "nome": "Allysson",
-  "email": "allysson@email.com"
-}
-```
-
-Observe que informações sensíveis ou internas não são expostas.
-
----
-
-# Validações
-
-Os DTOs de entrada utilizam Bean Validation.
-
-Exemplos utilizados:
+## Exemplo de validações
 
 ```java
 @NotBlank
@@ -185,7 +320,7 @@ Essas validações garantem integridade dos dados recebidos pela API.
 
 ---
 
-# Status HTTP Utilizados
+# 📊 Status HTTP Utilizados
 
 | Status           | Descrição                        |
 | ---------------- | -------------------------------- |
@@ -199,81 +334,18 @@ Essas validações garantem integridade dos dados recebidos pela API.
 
 ---
 
-# Endpoints Principais
-
-## Público
-
-```http
-GET /info
-```
-
----
-
-## Autenticação
-
-```http
-POST /auth/login
-```
-
----
-
-## Clientes
-
-```http
-GET /clientes
-POST /clientes
-GET /clientes/{id}
-PUT /clientes/{id}
-DELETE /clientes/{id}
-```
-
----
-
-## Categorias
-
-```http
-GET /categorias
-POST /categorias
-GET /categorias/{id}
-PUT /categorias/{id}
-DELETE /categorias/{id}
-```
-
----
-
-## Pagamentos
-
-```http
-GET /pagamentos
-POST /pagamentos
-GET /pagamentos/{id}
-PUT /pagamentos/{id}
-DELETE /pagamentos/{id}
-GET /pagamentos/tipo/{tipo}
-```
-
----
-
-## Auditoria
-
-```http
-GET /auditoria
-```
-
----
-
-# Collection Postman
+# 📮 Collection Postman
 
 A aplicação possui collection Postman contendo todos os endpoints da API com autenticação JWT automatizada.
 
 ---
 
-# Execução do Projeto
+# ▶️ Execução do Projeto
 
 ## Clonar repositório
 
 ```bash
-git clone <https://github.com/allyssonmast/Desenvolvimento-Web-II-Atividade-03>
+git clone https://github.com/SEU_REPOSITORIO.git
 ```
 
 ## Executar aplicação
@@ -284,6 +356,20 @@ git clone <https://github.com/allyssonmast/Desenvolvimento-Web-II-Atividade-03>
 
 ---
 
-# Autor
+# 📖 Documentação Swagger
 
-Desenvolvido por Allysson Freitas.
+```http
+http://localhost:8080/swagger-ui.html
+```
+
+---
+
+# 📌 Status do Projeto
+
+🚧 Em desenvolvimento
+
+---
+
+# 📄 Licença
+
+Projeto desenvolvido para fins acadêmicos.
