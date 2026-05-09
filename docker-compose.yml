@@ -1,0 +1,77 @@
+version: '3.9'
+
+services:
+
+  postgres-dev-main:
+    image: postgres:16
+    container_name: postgres-dev-main
+
+    restart: always
+
+    environment:
+      POSTGRES_DB: foodflow_dev
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_dev_main_data:/var/lib/postgresql/data
+
+  postgres-dev-audit:
+    image: postgres:16
+    container_name: postgres-dev-audit
+
+    restart: always
+
+    environment:
+      POSTGRES_DB: foodflow_audit_dev
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+    ports:
+      - "5433:5432"
+
+    volumes:
+      - postgres_dev_audit_data:/var/lib/postgresql/data
+
+  postgres-prod-main:
+    image: postgres:16
+    container_name: postgres-prod-main
+
+    restart: always
+
+    environment:
+      POSTGRES_DB: foodflow_prod
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres_prod
+
+    ports:
+      - "5434:5432"
+
+    volumes:
+      - postgres_prod_main_data:/var/lib/postgresql/data
+
+  postgres-prod-audit:
+    image: postgres:16
+    container_name: postgres-prod-audit
+
+    restart: always
+
+    environment:
+      POSTGRES_DB: foodflow_audit_prod
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres_prod
+
+    ports:
+      - "5435:5432"
+
+    volumes:
+      - postgres_prod_audit_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_dev_main_data:
+  postgres_dev_audit_data:
+  postgres_prod_main_data:
+  postgres_prod_audit_data:
