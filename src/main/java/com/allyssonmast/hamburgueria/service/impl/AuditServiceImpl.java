@@ -44,6 +44,7 @@ public class AuditServiceImpl implements AuditService {
 
         dto.setId(log.getId());
         dto.setAcao(log.getAcao());
+        dto.setEntidade(log.getEntidade());
         dto.setRecursoId(log.getRecursoId());
         dto.setDataHora(log.getDataHora());
 
