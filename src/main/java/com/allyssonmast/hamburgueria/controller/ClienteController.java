@@ -23,34 +23,15 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/clientes")
-@Tag(
-        name = "Clientes",
-        description = "Endpoints para gerenciamento de clientes"
-)
+@Tag(name = "Clientes", description = "Endpoints para gerenciamento de clientes")
 @SecurityRequirement(name = "bearerAuth")
 public class ClienteController {
 
     @Autowired
     private ClienteService service;
 
-    @Operation(
-            summary = "Listar clientes",
-            description = "Retorna todos os clientes cadastrados."
-    )
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Lista retornada com sucesso",
-                    content = @Content(
-                            mediaType = "application/json",
-                            array = @ArraySchema(
-                                    schema = @Schema(
-                                            implementation = ClienteResponseDTO.class
-                                    )
-                            )
-                    )
-            )
-    })
+    @Operation(summary = "Listar clientes", description = "Retorna todos os clientes cadastrados.")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Lista retornada com sucesso", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ClienteResponseDTO.class))))})
     @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<ClienteResponseDTO>> listar() {
@@ -58,124 +39,63 @@ public class ClienteController {
         return ResponseEntity.ok(service.listar());
     }
 
-    @PreAuthorize("hasRole('CLIENTE')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENTE')")
     @GetMapping("/me")
     public ResponseEntity<ClienteResponseDTO> buscarMeuPerfil(Authentication authentication) {
 
-        return ResponseEntity.ok(
-                service.buscarPorUsername(authentication.getName())
-        );
+        return ResponseEntity.ok(service.buscarPorUsername(authentication.getName()));
     }
 
-    @Operation(
-            summary = "Buscar cliente por ID",
-            description = "Retorna um cliente específico pelo ID."
-    )
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Cliente encontrado"
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Cliente não encontrado"
-            )
-    })
+    @Operation(summary = "Buscar cliente por ID", description = "Retorna um cliente específico pelo ID.")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Cliente encontrado"), @ApiResponse(responseCode = "404", description = "Cliente não encontrado")})
     @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<ClienteResponseDTO> buscar(
 
-            @Parameter(
-                    description = "ID do cliente",
-                    example = "1"
-            )
-            @PathVariable Long id
-    ) {
+            @Parameter(description = "ID do cliente", example = "1") @PathVariable Long id) {
 
         return ResponseEntity.ok(service.buscarPorId(id));
     }
 
-    @Operation(
-            summary = "Atualizar cliente",
-            description = "Atualiza os dados de um cliente existente."
-    )
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Cliente atualizado com sucesso"
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Cliente não encontrado"
-            )
-    })
+    @Operation(summary = "Atualizar cliente", description = "Atualiza os dados de um cliente existente.")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Cliente atualizado com sucesso"), @ApiResponse(responseCode = "404", description = "Cliente não encontrado")})
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<ClienteResponseDTO> atualizar(
 
-            @Parameter(
-                    description = "ID do cliente",
-                    example = "1"
-            )
-            @PathVariable Long id,
+            @Parameter(description = "ID do cliente", example = "1") @PathVariable Long id,
 
-            @Valid
-            @RequestBody
-            ClienteRequestDTO cliente
-    ) {
+            @Valid @RequestBody ClienteRequestDTO cliente) {
 
         return ResponseEntity.ok(service.atualizar(id, cliente));
     }
 
-    @PreAuthorize("hasRole('CLIENTE')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENTE')")
     @PutMapping("/me")
-    public ResponseEntity<ClienteResponseDTO> atualizarMeuPerfil(
-            Authentication authentication, @Valid @RequestBody ClienteRequestDTO dto) {
+    public ResponseEntity<ClienteResponseDTO> atualizarMeuPerfil(Authentication authentication, @Valid @RequestBody ClienteRequestDTO dto) {
 
-        return ResponseEntity.ok(
-                service.atualizarMeuPerfil(
-                        authentication.getName(),
-                        dto));
+        return ResponseEntity.ok(service.atualizarMeuPerfil(authentication.getName(), dto));
     }
 
-    @Operation(
-            summary = "Remover cliente",
-            description = "Remove um cliente pelo ID."
-    )
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "204",
-                    description = "Cliente removido com sucesso"
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Cliente não encontrado"
-            )
-    })
+    @Operation(summary = "Remover cliente", description = "Remove um cliente pelo ID.")
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Cliente removido com sucesso"), @ApiResponse(responseCode = "404", description = "Cliente não encontrado")})
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(
 
-            @Parameter(
-                    description = "ID do cliente",
-                    example = "1"
-            )
-            @PathVariable Long id
-    ) {
+            @Parameter(description = "ID do cliente", example = "1") @PathVariable Long id) {
 
         service.deletar(id);
 
         return ResponseEntity.noContent().build();
     }
 
-    @PreAuthorize("hasRole('CLIENTE')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENTE')")
     @DeleteMapping("/me")
     public ResponseEntity<Void> deletarMeuPerfil(Authentication authentication) {
 
         service.deletarMeuPerfil(authentication.getName());
 
-        return ResponseEntity
-                .noContent()
-                .build();
+        return ResponseEntity.noContent().build();
     }
 }

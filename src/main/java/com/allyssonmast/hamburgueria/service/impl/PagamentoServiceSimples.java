@@ -40,7 +40,7 @@ public class PagamentoServiceSimples implements PagamentoService {
 
         pagamento.setValor(pedido.getValorTotal());
 
-        pagamento.setStatus(StatusPagamento.PROCESSADO);
+        pagamento.setStatus(StatusPagamento.PAGO);
 
         Pagamento salvo = pagamentoRepository.save(pagamento);
 

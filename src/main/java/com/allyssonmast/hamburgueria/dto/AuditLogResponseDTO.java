@@ -11,6 +11,7 @@ public class AuditLogResponseDTO {
 
     private Long id;
     private String acao;
+    private String entidade;
     private Long recursoId;
     private LocalDateTime dataHora;
 }
