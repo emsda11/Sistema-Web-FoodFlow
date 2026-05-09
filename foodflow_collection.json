@@ -1,0 +1,490 @@
+{
+  "info": {
+    "name": "FoodFlow - Projeto Final DWeb II",
+    "_postman_id": "foodflow-final-project",
+    "description": "Collection do projeto final FoodFlow com JWT e compartilhamento automático de token",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{foodflow_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "foodflow_token",
+      "value": ""
+    }
+  ],
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "if (pm.request.url.path.includes('login')) {",
+          "    const response = pm.response.json();",
+          "    pm.collectionVariables.set('foodflow_token', response.token);",
+          "}"
+        ]
+      }
+    }
+  ],
+  "item": [
+    {
+      "name": "AUTH",
+      "item": [
+        {
+          "name": "REGISTRAR CLIENTE",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"cliente1\",\n  \"password\": \"123456\",\n  \"nome\": \"Cliente Teste\",\n  \"email\": \"cliente@email.com\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/register/cliente",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "register",
+                "cliente"
+              ]
+            }
+          }
+        },
+        {
+          "name": "REGISTRAR RESTAURANTE",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"restaurante1\",\n  \"password\": \"123456\",\n  \"nome\": \"Burger House\",\n  \"descricao\": \"Hamburgueria artesanal\",\n  \"endereco\": \"Rua Central, 100\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/register/restaurante",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "register",
+                "restaurante"
+              ]
+            }
+          }
+        },
+        {
+          "name": "LOGIN ADMIN",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          }
+        },
+        {
+          "name": "LOGIN CLIENTE",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"cliente1\",\n  \"password\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          }
+        },
+        {
+          "name": "LOGIN RESTAURANTE",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"restaurante1\",\n  \"password\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "CLIENTES",
+      "item": [
+        {
+          "name": "BUSCAR MEU PERFIL/CLIENTE",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/clientes/me",
+              "host": ["{{base_url}}"],
+              "path": ["clientes", "me"]
+            }
+          }
+        },
+        {
+          "name": "LISTAR CLIENTES",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/clientes",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "clientes"
+              ]
+            }
+          }
+        },
+        {
+          "name": "BUSCAR CLIENTE POR ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/clientes/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "clientes",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "ATUALIZAR CLIENTE",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Cliente Atualizado\",\n  \"email\": \"clienteatualizado@email.com\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/clientes/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "clientes",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "ATUALIZAR MEU PERFIL",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Cliente Atualizado\",\n  \"email\": \"cliente@email.com\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/clientes/me",
+              "host": ["{{base_url}}"],
+              "path": ["clientes", "me"]
+            }
+          }
+        },
+        {
+          "name": "DELETAR CLIENTE",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/clientes/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "clientes",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "DELETAR MEU PERFIL",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/clientes/me",
+              "host": ["{{base_url}}"],
+              "path": ["clientes", "me"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "RESTAURANTES",
+      "item": [
+        {
+          "name": "LISTAR RESTAURANTES",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{foodflow_token}}"
+                }
+              ]
+            },
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/restaurantes",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "restaurantes"
+              ]
+            }
+          }
+        },
+        {
+          "name": "LISTAR RESTAURANTES ATIVOS",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{foodflow_token}}"
+                }
+              ]
+            },
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/restaurantes/ativos",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "restaurantes",
+                "ativos"
+              ]
+            }
+          }
+        },
+        {
+          "name": "BUSCAR RESTAURANTE POR ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{foodflow_token}}"
+                }
+              ]
+            },
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/restaurantes/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "restaurantes",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "BUSCAR RESTAURANTE POR NOME",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/restaurantes/buscar?nome=burger",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "restaurantes",
+                "buscar"
+              ],
+              "query": [
+                {
+                  "key": "nome",
+                  "value": "burger"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "ATUALIZAR RESTAURANTE",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Burger House Premium\",\n  \"descricao\": \"Hamburgueria gourmet\",\n  \"endereco\": \"Nova Avenida, 500\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/restaurantes/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "restaurantes",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "PAGAMENTOS",
+      "item": [
+        {
+          "name": "PROCESSAR PAGAMENTO",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pedidoId\": 1,\n  \"metodo\": \"PIX\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/pagamentos",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "pagamentos"
+              ]
+            }
+          }
+        },
+        {
+          "name": "BUSCAR PAGAMENTO POR ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/pagamentos/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "pagamentos",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

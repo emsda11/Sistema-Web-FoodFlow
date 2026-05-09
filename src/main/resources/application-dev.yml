@@ -1,0 +1,21 @@
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    jdbc-url: ${DB_MAIN_URL}
+    username: ${DB_MAIN_USERNAME}
+    password: ${DB_MAIN_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+audit:
+  datasource:
+    url: ${DB_AUDIT_URL}
+    username: ${DB_AUDIT_USERNAME}
+    password: ${DB_AUDIT_PASSWORD}
+    driver-class-name: org.postgresql.Driver

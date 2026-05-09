@@ -1,0 +1,9 @@
+Justificativa da Escolha do Domínio
+
+Escolhi o domínio de pagamentos por ser algo comum em sistemas reais e fácil de entender.
+Ele permite trabalhar com regras de negócio diferentes dependendo do tipo de pagamento,
+como PIX, cartão ou boleto, o que atende bem ao que foi pedido na atividade.
+
+Também facilita a organização do projeto em camadas, o uso de DTOs
+e a implementação de diferentes formas de processamento no service.
+Assim, dá pra aplicar os conceitos da disciplina de forma prática, sem deixar o sistema complexo demais.
