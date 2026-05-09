@@ -7,6 +7,7 @@ import com.allyssonmast.hamburgueria.service.AuditService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -22,6 +23,19 @@ public class AuditServiceImpl implements AuditService {
                 .stream()
                 .map(this::toDTO)
                 .toList();
+    }
+
+    @Override
+    public void registrar(String entidade, Long recursoId, String acao) {
+
+        AuditLog log = new AuditLog();
+
+        log.setEntidade(entidade);
+        log.setRecursoId(recursoId);
+        log.setAcao(acao);
+        log.setDataHora(LocalDateTime.now());
+
+        repository.save(log);
     }
 
     private AuditLogResponseDTO toDTO(AuditLog log) {
