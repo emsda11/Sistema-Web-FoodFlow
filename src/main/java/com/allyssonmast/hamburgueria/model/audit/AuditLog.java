@@ -18,6 +18,8 @@ public class AuditLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String entidade;
+
     private String acao;
 
     private Long recursoId;

@@ -1,9 +1,10 @@
 package com.allyssonmast.hamburgueria.config;
 
+import com.zaxxer.hikari.HikariDataSource;
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,16 +25,26 @@ public class AuditDatabaseConfig {
 
     @Bean
     @ConfigurationProperties(prefix = "audit.datasource")
+    public DataSourceProperties auditDataSourceProperties() {
+        return new DataSourceProperties();
+    }
+
+    @Bean
     public DataSource auditDataSource() {
-        return DataSourceBuilder.create().build();
+        return auditDataSourceProperties()
+                .initializeDataSourceBuilder()
+                .type(HikariDataSource.class)
+                .build();
     }
 
     @Bean
     public LocalContainerEntityManagerFactoryBean auditEntityManagerFactory(
-            EntityManagerFactoryBuilder builder
+            EntityManagerFactoryBuilder builder,
+            @Qualifier("auditDataSource") DataSource dataSource
     ) {
+
         return builder
-                .dataSource(auditDataSource())
+                .dataSource(dataSource)
                 .packages("com.allyssonmast.hamburgueria.model.audit")
                 .persistenceUnit("audit")
                 .build();
