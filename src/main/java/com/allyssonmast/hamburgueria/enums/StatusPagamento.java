@@ -2,7 +2,7 @@ package com.allyssonmast.hamburgueria.enums;
 
 public enum StatusPagamento {
 
-    PROCESSANDO,
-    PROCESSADO,
+    PENDENTE,
+    PAGO,
     RECUSADO
 }

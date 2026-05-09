@@ -9,6 +9,6 @@ import org.springframework.stereotype.Service;
 public class PixStrategy implements ProcessadorPagamentoStrategy {
 
     public StatusPagamento processar(Pagamento pagamento) {
-        return StatusPagamento.PROCESSADO;
+        return StatusPagamento.PAGO;
     }
 }
